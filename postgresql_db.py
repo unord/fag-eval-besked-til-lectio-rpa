@@ -1,6 +1,10 @@
 import psycopg2
 from decouple import config
-from . import tools
+import tools
+import datetime
+
+
+
 
 # documentation for postgresql: https://stackabuse.com/working-with-postgresql-in-python/
 
@@ -11,6 +15,7 @@ qsql_host = config('PSQL_HOST')
 qsql_port = config('PSQL_PORT')
 
 psql_table = 'eval_app_classschool'
+now = datetime.datetime.now()
 
 def psql_test_connection():
     try:
@@ -38,14 +43,14 @@ def get_all_rows(this_table=psql_table, this_condition=''):
 
 def update_single_value(this_table, this_row, this_value, this_condition):
     con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host, port=qsql_port)
-
+    this_time = now.strftime("%d-%m-%Y %H:%M:%S")
     cur = con.cursor()
     cur.execute(f"UPDATE {this_table} SET {this_row} = {this_value} WHERE {this_condition}")
     try:
         con.commit()
-        print(f"Updated id: {this_value}, to id_state:{this_condition}")
+        print(f"{this_time}: Updateing {this_condition} , altered to id_state:{this_value}")
     except:
-        error_msg = f"Error in Updateing id: {this_value}, to id_state:{this_condition}"
+        error_msg = f"{this_time}: Error in Updateing {this_condition} , to id_state:{this_value}"
         tools.smsSend('4591330148', error_msg)
 
 def get_all_tables():

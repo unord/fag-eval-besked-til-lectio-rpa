@@ -13,7 +13,7 @@ def main():
         if now.hour == this_hour:
             # Get rows from database
             postgresql_db.psql_test_connection() #test database forbindelse
-            rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id = 2 AND eval_open_datetime  < NOW()")
+            rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id = 2 AND eval_open_datetime  < NOW() AND eval_year = 2022")
 
             for row in rows:
                 # Send messeges to Lectio
