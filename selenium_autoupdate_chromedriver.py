@@ -80,7 +80,7 @@ def lectio_login(browser):
             input_username.send_keys(lectio_user)
             try_attempt = max_try_attempts
         except NoSuchElementException:
-            if try_attempt == 99:
+            if try_attempt == max_try_attempts-1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the username in lectio login page"
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
@@ -94,7 +94,7 @@ def lectio_login(browser):
             input_password.send_keys(lectio_password)
             try_attempt = max_try_attempts
         except NoSuchElementException:
-            if try_attempt == 99:
+            if try_attempt == max_try_attempts-1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the password in lectio login page"
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
@@ -107,7 +107,7 @@ def lectio_login(browser):
             button_login.click()
             try_attempt = max_try_attempts
         except NoSuchElementException:
-            if try_attempt == 99:
+            if try_attempt == max_try_attempts-1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to click the login button in lectio login page"
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
