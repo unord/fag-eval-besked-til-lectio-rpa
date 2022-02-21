@@ -1,6 +1,5 @@
 import time
-from decouple import config
-import class_msg, selenium_autoupdate_chromedriver, send_sms, postgresql_db
+import selenium_autoupdate_chromedriver, send_sms, postgresql_db, lectio
 import datetime
 
 now = datetime.datetime.now()
@@ -17,7 +16,7 @@ def main():
             rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id = 2 AND eval_open_datetime  < NOW() AND eval_year = 2022")
             if len(rows) > 0:
                 browser = selenium_autoupdate_chromedriver.start_browser()
-                selenium_autoupdate_chromedriver.lectio_login(browser)
+                lectio.lectio_login(browser)
 
                 for row in rows:
                     # Send messeges to Lectio
@@ -25,7 +24,7 @@ def main():
                     this_team:str
                     this_msg:str
 
-                    selenium_autoupdate_chromedriver.lectio_send_msg(browser, this_team, this_msg)
+                    lectio.lectio_send_msg(browser, this_team, this_msg)
 
                     # Change state in database to "Shown in Lectio"
                     postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
