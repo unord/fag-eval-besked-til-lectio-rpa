@@ -1,6 +1,9 @@
+import time
+
 from decouple import config
 from selenium import webdriver
 from selenium.common.exceptions import SessionNotCreatedException, WebDriverException, NoSuchElementException
+from selenium.webdriver.common.keys import Keys
 import platform
 import send_sms
 import datetime
@@ -69,4 +72,90 @@ def lectio_login(browser):
 
 
 def lectio_send_msg(browser, this_team, this_msg):
-    pass
+    now = datetime.datetime.now()
+    this_team = lectio_test_class #For test only
+    this_subject = f"Fagevalueringsundersøgelse for hold: {this_team}"
+
+    # go to lectio send message page
+    try:
+        browser.get(lectio_url_send_msg)
+    except:
+        error_msg = "FAG_eval_rpa crashed when trying to access lectio send message page"
+        send_sms.sms_troubleshooters(error_msg)
+        sys.exit()
+
+    # insert class in "to field"
+    try_attempt = 0
+    while try_attempt != max_try_attempts:
+        try:
+            input_class_name = browser.find_element_by_id("s_m_Content_Content_addRecipientDD_inp")
+            input_class_name.send_keys(this_team)
+            input_class_name.send_keys(Keys.ARROW_DOWN)
+            input_class_name.send_keys(Keys.ARROW_DOWN)
+            input_class_name.send_keys(Keys.ENTER)
+            try_attempt = max_try_attempts
+        except NoSuchElementException:
+            if try_attempt == max_try_attempts - 1:
+                error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the class_name in lectio send message page"
+                send_sms.sms_troubleshooters(error_msg)
+                sys.exit()
+            try_attempt = try_attempt + 1
+
+    # insert message in "subject field"
+    try_attempt = 0
+    while try_attempt != max_try_attempts:
+        try:
+            input_subject = browser.find_element_by_id("s_m_Content_Content_CreateThreadEditMessageTitle_tb")
+            input_subject.send_keys(this_subject)
+            try_attempt = max_try_attempts
+        except NoSuchElementException:
+            if try_attempt == max_try_attempts - 1:
+                error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the subject in lectio send message page"
+                send_sms.sms_troubleshooters(error_msg)
+                sys.exit()
+            try_attempt = try_attempt + 1
+
+    # checkbox may reply set to unchecked
+    try_attempt = 0
+    while try_attempt != max_try_attempts:
+        try:
+            checkbox_may_reply = browser.find_element_by_id("s_m_Content_Content_RepliesToThreadOrExistingMessageAllowedChk")
+            if checkbox_may_reply.is_selected():
+                checkbox_may_reply.click()
+                try_attempt = max_try_attempts
+        except NoSuchElementException:
+            if try_attempt == max_try_attempts - 1:
+                error_msg = f"{now}: FAG_eval_rpa crashed when trying to unclick may reply in lectio send message page"
+                send_sms.sms_troubleshooters(error_msg)
+                sys.exit()
+            try_attempt = try_attempt + 1
+
+    # insert message in "message field"
+    try_attempt = 0
+    while try_attempt != max_try_attempts:
+        try:
+            input_message = browser.find_element_by_id("s_m_Content_Content_CreateThreadEditMessageContent_TbxNAME_tb")
+            input_message.send_keys(this_msg)
+            try_attempt = max_try_attempts
+        except NoSuchElementException:
+            if try_attempt == max_try_attempts - 1:
+                error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the message in lectio send message page"
+                send_sms.sms_troubleshooters(error_msg)
+                sys.exit()
+            try_attempt = try_attempt + 1
+
+    # click submit button
+    try_attempt = 0
+    while try_attempt != max_try_attempts:
+        try:
+            button_submit = browser.find_element_by_id("s_m_Content_Content_CreateThreadEditMessageOkBtn")
+            button_submit.click()
+            try_attempt = max_try_attempts
+        except NoSuchElementException:
+            if try_attempt == max_try_attempts - 1:
+                error_msg = f"{now}: FAG_eval_rpa crashed when trying to click the submit button in lectio send message page"
+                send_sms.sms_troubleshooters(error_msg)
+                sys.exit()
+            try_attempt = try_attempt + 1
+
+    #time.sleep(600)

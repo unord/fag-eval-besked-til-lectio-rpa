@@ -5,7 +5,7 @@ from decouple import config
 #requires a .env file with a api to sms.dk
 sms_api_key = config('SMS_API_KEY')
 
-user_cellphone = []
+user_cellphone = ["91330148"]
 
 def sms_troubleshooters(this_msg:str):
     i = 0
@@ -14,7 +14,7 @@ def sms_troubleshooters(this_msg:str):
         i = i + 1
 
 
-def sms_send(this_cellphone, this_msg):
+def sms_send(this_cellphone:str, this_msg:str):
     url = "https://api.sms.dk/v1/sms/send"
     payload = json.dumps({
         "receiver": int("45" + str(this_cellphone)),

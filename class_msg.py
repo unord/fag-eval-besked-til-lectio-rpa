@@ -18,13 +18,42 @@ def main():
                 browser = selenium_autoupdate_chromedriver.start_browser()
                 lectio.lectio_login(browser)
 
+
+
+
                 for row in rows:
+
+
                     # Send messeges to Lectio
                     print(row)
-                    this_team:str
-                    this_msg:str
+                    this_id = row[0]
+                    this_subject = row[1]
+                    this_record_editied = row[2]
+                    this_class_element = row[3]
+                    this_teacher_name = row[4]
+                    this_random = row[5]
+                    this_teacher_login = row[6]
+                    this_eval_year = this_ = row[7]
+                    this_record_created = row[8]
+                    this_class_size = [9]
+                    this_class = row[10]
+                    this_url =row[11]
+                    this_sent_status = row[12]
+                    this_runtime = row[13]
 
-                    lectio.lectio_send_msg(browser, this_team, this_msg)
+
+
+                    this_message = f"Hej elever for hold: {this_class_element}\n\n"
+                    this_message = f"{this_message}Jeres evaluerings skema er klar til at blive besvaret for:\n\n"
+                    this_message = f"{this_message}Hold: {this_class_element}\n"
+                    this_message = f"{this_message}Underviser ansvarligt for holdet: {this_teacher_name}, ({this_teacher_login})\n\n"
+                    this_message = f"{this_message}U/Nord sætter stor pris på at du besvare dette spørgeskema hurtigst muligt og inde den 03/10-2022\n\n"
+                    this_message = f'{this_message}Link til online skema: [url={this_url}]Fagevaluering: {this_class_element} - {this_subject}[/url]\n\n'
+                    this_message = f"{this_message}mvh U/Nord"
+
+
+
+                    lectio.lectio_send_msg(browser, this_class, this_message)
 
                     # Change state in database to "Shown in Lectio"
                     postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
