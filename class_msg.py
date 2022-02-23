@@ -1,20 +1,26 @@
 import time
-import selenium_autoupdate_chromedriver, send_sms, postgresql_db, lectio
+import selenium_autoupdate_chromedriver, send_sms, postgresql_db, lectio, log
 import datetime
 
-now = datetime.datetime.now()
+log_date = datetime.datetime.now()
 test_mode = True
 
 
 def main():
     # Check to see if the current hour has changed
+    now = datetime.datetime.now()
     this_hour = now.hour
+
+    log.log(f"The current hour is set to: {this_hour}")
     while True:
+        now = datetime.datetime.now()
         if now.hour == this_hour:
+            #print(f"this hour: {this_hour}, now hour: {now.hour}")
             # Get rows from database
             postgresql_db.psql_test_connection() #test database forbindelse
             rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id = 2 AND eval_open_datetime  < NOW() AND eval_year = 2022")
             if len(rows) > 0:
+                log.log("Their are tasks schedueled. Starting browser.")
                 browser = selenium_autoupdate_chromedriver.start_browser()
                 lectio.lectio_login(browser)
 
@@ -25,7 +31,7 @@ def main():
 
 
                     # Send messeges to Lectio
-                    print(row)
+                    #log.log(str(row))
                     this_id = row[0]
                     this_subject = row[1]
                     this_record_editied = row[2]
@@ -54,17 +60,27 @@ def main():
 
 
                     lectio.lectio_send_msg(browser, this_class, this_message)
+                    log.log(f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
 
                     # Change state in database to "Shown in Lectio"
                     postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
+                log.log("All tasks that are schedueled are complete. Sleepinging for 60s before trying again")
+                log.log("Closeing browser")
                 browser.close()
+
+
+            else:
+                log.log("No tasks schedueled. Sleepinging for 60s before trying again")
+
             #Wait 60 seconds
             time.sleep(60)
 
         else:
             #Send sms  and change hour
-            this_msg = "RPA proggrammet der sender beskeder via lectio kører stadigvæk."
+            this_msg = "RPA that sends messages via lectio is still running."
             send_sms.sms_troubleshooters(this_msg)
+            this_timestamp = datetime.datetime.now()
+            log.log(f"sent sms that program is still running.")
             this_hour = now.hour
 
 

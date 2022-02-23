@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.common.exceptions import SessionNotCreatedException, WebDriverException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 import platform
-import send_sms
+import send_sms, log
 import datetime
 import sys
 
@@ -39,6 +39,7 @@ def lectio_login(browser):
         except NoSuchElementException:
             if try_attempt == max_try_attempts-1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the username in lectio login page"
+                log.log("FAG_eval_rpa crashed when trying to type the username in lectio login page")
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
             try_attempt = try_attempt + 1
@@ -53,6 +54,7 @@ def lectio_login(browser):
         except NoSuchElementException:
             if try_attempt == max_try_attempts-1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the password in lectio login page"
+                log.log("FAG_eval_rpa crashed when trying to type the password in lectio login page")
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
             try_attempt = try_attempt + 1
@@ -66,6 +68,7 @@ def lectio_login(browser):
         except NoSuchElementException:
             if try_attempt == max_try_attempts-1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to click the login button in lectio login page"
+                log.log("FAG_eval_rpa crashed when trying to click the login button in lectio login page")
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
             try_attempt = try_attempt + 1
@@ -81,6 +84,7 @@ def lectio_send_msg(browser, this_team, this_msg):
         browser.get(lectio_url_send_msg)
     except:
         error_msg = "FAG_eval_rpa crashed when trying to access lectio send message page"
+        log.log("FAG_eval_rpa crashed when trying to access lectio send message page")
         send_sms.sms_troubleshooters(error_msg)
         sys.exit()
 
@@ -97,6 +101,7 @@ def lectio_send_msg(browser, this_team, this_msg):
         except NoSuchElementException:
             if try_attempt == max_try_attempts - 1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the class_name in lectio send message page"
+                log.log("FAG_eval_rpa crashed when trying to type the class_name in lectio send message page")
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
             try_attempt = try_attempt + 1
@@ -111,6 +116,7 @@ def lectio_send_msg(browser, this_team, this_msg):
         except NoSuchElementException:
             if try_attempt == max_try_attempts - 1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the subject in lectio send message page"
+                log.log("FAG_eval_rpa crashed when trying to type the subject in lectio send message page")
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
             try_attempt = try_attempt + 1
@@ -126,6 +132,7 @@ def lectio_send_msg(browser, this_team, this_msg):
         except NoSuchElementException:
             if try_attempt == max_try_attempts - 1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to unclick may reply in lectio send message page"
+                log.log("FAG_eval_rpa crashed when trying to unclick may reply in lectio send message page")
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
             try_attempt = try_attempt + 1
@@ -140,6 +147,7 @@ def lectio_send_msg(browser, this_team, this_msg):
         except NoSuchElementException:
             if try_attempt == max_try_attempts - 1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the message in lectio send message page"
+                log.log("FAG_eval_rpa crashed when trying to type the message in lectio send message page")
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
             try_attempt = try_attempt + 1
@@ -154,6 +162,7 @@ def lectio_send_msg(browser, this_team, this_msg):
         except NoSuchElementException:
             if try_attempt == max_try_attempts - 1:
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to click the submit button in lectio send message page"
+                log.log("FAG_eval_rpa crashed when trying to click the submit button in lectio send message page")
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
             try_attempt = try_attempt + 1

@@ -1,6 +1,6 @@
 import psycopg2
 from decouple import config
-import send_sms
+import send_sms, log
 import datetime
 
 
@@ -18,14 +18,15 @@ psql_table = 'eval_app_classschool'
 now = datetime.datetime.now()
 
 def psql_test_connection():
+    now = datetime.datetime.now()
     try:
         con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host, port=qsql_port)
-        print("Database opened successfully")
+        log.log(f"Database opened successfully")
         con.close()
     except:
-        error_msg = "Database connection failed, check credentials"
-        print(error_msg)
-        tools.smsSend('4591330148', error_msg)
+        error_msg = f"Database connection failed, check credentials"
+        log.log(error_msg)
+        send_sms.sms_troubleshooters(error_msg)
 
 def get_all_rows(this_table=psql_table, this_condition=''):
     con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host, port=qsql_port)
@@ -37,8 +38,9 @@ def get_all_rows(this_table=psql_table, this_condition=''):
         cur.execute(f"SELECT * from {this_table} WHERE {this_condition}")
 
     rows = cur.fetchall()
-
+    log.log("Records collected from database")
     con.close()
+    log.log("Database connection closed correctly after acquiring records")
     return rows
 
 def update_single_value(this_table, this_row, this_value, this_condition):
@@ -48,10 +50,11 @@ def update_single_value(this_table, this_row, this_value, this_condition):
     cur.execute(f"UPDATE {this_table} SET {this_row} = {this_value} WHERE {this_condition}")
     try:
         con.commit()
-        print(f"{this_time}: Updateing {this_condition} , altered to id_state:{this_value}")
+        log.log(f"Updateing {this_condition} , altered to id_state:{this_value}")
     except:
-        error_msg = f"{this_time}: Error in Updateing {this_condition} , to id_state:{this_value}"
-        tools.smsSend('4591330148', error_msg)
+        error_msg = f"Error in Updateing {this_condition} , to id_state:{this_value}"
+        log.log(error_msg)
+        tools.smsSend('4591330148', f"{this_time}: "+error_msg)
 
 def get_all_tables():
     con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host, port=qsql_port)
