@@ -4,8 +4,7 @@ import selenium_autoupdate_chromedriver, send_sms, postgresql_db, lectio, log
 import datetime
 
 log_date = datetime.datetime.now()
-test_mode = True
-final_date = "22/02-2023 15:00"
+final_date = "04/03-2022 09:00" # format: dd/mm/yyyy hh:mm
 final_date = datetime.datetime.strptime(final_date, "%d/%m-%Y %H:%M")
 
 
@@ -62,12 +61,11 @@ def main():
                         this_runtime = row[13]
 
                         this_message = f"Hej elever for hold: {this_class_element}\n\n"
-                        this_message = f"{this_message}Jeres evaluerings skema er klar til at blive besvaret for:\n\n"
+                        this_message = f"{this_message}Fagevaluering:\n\n"
                         this_message = f"{this_message}Hold: {this_class_element}\n"
-                        this_message = f"{this_message}Underviser ansvarligt for holdet: {this_teacher_name}, ({this_teacher_login})\n\n"
-                        this_message = f"{this_message}U/Nord sætter stor pris på at du besvare dette spørgeskema hurtigst muligt og inde den 03/10-2022\n\n"
+                        this_message = f"{this_message}Lærer for holdet: {this_teacher_name}, ({this_teacher_login})\n\n"
                         this_message = f'{this_message}Link til online skema: [url={this_url}]Fagevaluering: {this_class_element} - {this_subject}[/url]\n\n'
-                        this_message = f"{this_message}mvh U/Nord"
+                        this_message = f"{this_message}Venlig hilsen\nU/NORD"
 
                         lectio.lectio_send_msg(browser, this_class, this_message)
                         log.log(f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
@@ -113,15 +111,12 @@ def main():
                         this_sent_status = row[12]
                         this_runtime = row[13]
 
-
-
                         this_message = f"Hej elever for hold: {this_class_element}\n\n"
-                        this_message = f"{this_message}Jeres evaluerings skema er klar til at blive besvaret for:\n\n"
+                        this_message = f"{this_message}Fagevaluering:\n\n"
                         this_message = f"{this_message}Hold: {this_class_element}\n"
-                        this_message = f"{this_message}Underviser ansvarligt for holdet: {this_teacher_name}, ({this_teacher_login})\n\n"
-                        this_message = f"{this_message}U/Nord sætter stor pris på at du besvare dette spørgeskema hurtigst muligt og inde den 03/10-2022\n\n"
+                        this_message = f"{this_message}Lærer for holdet: {this_teacher_name}, ({this_teacher_login})\n\n"
                         this_message = f'{this_message}Link til online skema: [url={this_url}]Fagevaluering: {this_class_element} - {this_subject}[/url]\n\n'
-                        this_message = f"{this_message}mvh U/Nord"
+                        this_message = f"{this_message}Venlig hilsen\nU/NORD"
 
 
 

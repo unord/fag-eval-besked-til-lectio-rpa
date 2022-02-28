@@ -54,7 +54,7 @@ def update_single_value(this_table, this_row, this_value, this_condition):
     except:
         error_msg = f"Error in Updateing {this_condition} , to id_state:{this_value}"
         log.log(error_msg)
-        tools.smsSend('4591330148', f"{this_time}: "+error_msg)
+        send_sms.sms_troubleshooters(error_msg)
 
 def get_all_tables():
     con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host, port=qsql_port)

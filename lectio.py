@@ -167,4 +167,4 @@ def lectio_send_msg(browser, this_team, this_msg):
                 sys.exit()
             try_attempt = try_attempt + 1
 
-    #time.sleep(600)
+
