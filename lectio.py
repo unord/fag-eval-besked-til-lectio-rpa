@@ -76,7 +76,7 @@ def lectio_login(browser):
 
 def lectio_send_msg(browser, this_team, this_msg):
     now = datetime.datetime.now()
-    this_team = lectio_test_class #For test only
+    #this_team = lectio_test_class #For test only
     this_subject = f"Fagevalueringsundersøgelse for hold: {this_team}"
 
     # go to lectio send message page
@@ -96,6 +96,9 @@ def lectio_send_msg(browser, this_team, this_msg):
             input_class_name.send_keys(this_team)
             input_class_name.send_keys(Keys.ARROW_DOWN)
             input_class_name.send_keys(Keys.ARROW_DOWN)
+            if this_team == "hvhh1c Vø":
+                input_class_name.send_keys(Keys.ARROW_DOWN)
+
             input_class_name.send_keys(Keys.ENTER)
             try_attempt = max_try_attempts
         except NoSuchElementException:
@@ -153,9 +156,11 @@ def lectio_send_msg(browser, this_team, this_msg):
             try_attempt = try_attempt + 1
 
     # click submit button
+
     try_attempt = 0
     while try_attempt != max_try_attempts:
         try:
+            pass
             button_submit = browser.find_element_by_id("s_m_Content_Content_CreateThreadEditMessageOkBtn")
             button_submit.click()
             try_attempt = max_try_attempts
