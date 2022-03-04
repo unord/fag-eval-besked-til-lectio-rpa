@@ -1,3 +1,5 @@
+import datetime
+
 import requests
 import json
 from decouple import config
@@ -8,10 +10,10 @@ sms_api_key = config('SMS_API_KEY')
 user_cellphone = ["20529367"]
 
 def sms_troubleshooters(this_msg:str):
-    i = 0
+
     for cellphone_number in user_cellphone:
-        sms_send(user_cellphone[i], this_msg)
-        i = i + 1
+        sms_send(cellphone_number, this_msg)
+
 
 
 def sms_send(this_cellphone:str, this_msg:str):
@@ -30,3 +32,11 @@ def sms_send(this_cellphone:str, this_msg:str):
      }
     response = requests.request("POST", url, headers=headers, data=payload)
     #print(response.text)
+
+if __name__ == "__main__":
+    # execute only if run as a script
+    now = datetime.datetime.now()
+    try:
+        sms_troubleshooters(f"{now}: SMS test worked")
+    except:
+        print("Something went wrong")
