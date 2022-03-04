@@ -18,7 +18,6 @@ def main():
     while True:
         now = datetime.datetime.now()
         if now.hour == this_hour:
-            #print(f"this hour: {this_hour}, now hour: {now.hour}")
 
             # Test connection
             postgresql_db.psql_test_connection() #test database forbindelse
