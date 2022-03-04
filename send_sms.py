@@ -5,7 +5,7 @@ from decouple import config
 #requires a .env file with a api to sms.dk
 sms_api_key = config('SMS_API_KEY')
 
-user_cellphone = ["91330148"]
+user_cellphone = ["20529367"]
 
 def sms_troubleshooters(this_msg:str):
     i = 0
