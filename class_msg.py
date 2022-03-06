@@ -4,8 +4,10 @@ import selenium_autoupdate_chromedriver, send_sms, postgresql_db, lectio, log
 import datetime
 
 log_date = datetime.datetime.now()
-final_date = "04/03-2022 09:00" # format: dd/mm/yyyy hh:mm
-final_date = datetime.datetime.strptime(final_date, "%d/%m-%Y %H:%M")
+final_choice_date = "16/03-2022 09:00" # format: dd/mm/yyyy hh:mm
+final_reg_date = "10/03-2022 09:00" # format: dd/mm/yyyy hh:mm
+final_choice_date = datetime.datetime.strptime(final_choice_date, "%d/%m-%Y %H:%M")
+final_reg_date = datetime.datetime.strptime(final_reg_date, "%d/%m-%Y %H:%M")
 
 
 
@@ -23,7 +25,7 @@ def main():
             postgresql_db.psql_test_connection() #test database forbindelse
 
             # Test to see if final datetime has passed
-            if now > final_date:
+            if now > final_choice_date:
                 log.log("Final datetime has passed. Will check to see if their are not procced tasks that need to be sent.")
 
 
@@ -76,7 +78,51 @@ def main():
                     log.log("Closeing browser")
                 browser.close()
 
+                if len(rows) <= 0:
+                    log.log("Their are no unprocced tasks. Sending status SMS and shutting down program")
+                    this_msg = "Final datetime passed and all taskes have been solved. Shutting dwon because of nothing more todo."
+                    send_sms.sms_troubleshooters(this_msg)
+                    sys.exit()
+                # Check to see if any task shoould be run
+                else:
+                    log.log("Their are unprocced tasks. Starting browser.")
+                    browser = selenium_autoupdate_chromedriver.start_browser()
+                    lectio.lectio_login(browser)
 
+                    for row in rows:
+                        # Send messeges to Lectio
+                        # log.log(str(row))
+                        this_id = row[0]
+                        this_subject = row[1]
+                        this_record_editied = row[2]
+                        this_class_element = row[3]
+                        this_teacher_name = row[4]
+                        this_random = row[5]
+                        this_teacher_login = row[6]
+                        this_eval_year = this_ = row[7]
+                        this_record_created = row[8]
+                        this_class_size = [9]
+                        this_class = row[10]
+                        this_url = row[11]
+                        this_sent_status = row[12]
+                        this_runtime = row[13]
+
+                        this_message = f"Hej elever for hold: {this_class_element}\n\n"
+                        this_message = f"{this_message}Fagevaluering:\n\n"
+                        this_message = f"{this_message}Hold: {this_class_element}\n"
+                        this_message = f"{this_message}Lærer for holdet: {this_teacher_name}, ({this_teacher_login})\n\n"
+                        this_message = f'{this_message}Link til online skema: [url={this_url}]Fagevaluering: {this_class_element} - {this_subject}[/url]\n\n'
+                        this_message = f"{this_message}Venlig hilsen\nU/NORD"
+
+                        lectio.lectio_send_msg(browser, this_class, this_message)
+                        log.log(f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
+
+                        # Change state in database to "Shown in Lectio"
+                        postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3,
+                                                          f"id={row[0]}")
+                    log.log("All tasks that are schedueled are complete. Sleepinging for 60s before trying again")
+                    log.log("Closeing browser")
+                browser.close()
 
 
             else:
