@@ -12,6 +12,9 @@ final_reg_date = datetime.datetime.strptime(final_reg_date, "%d/%m-%Y %H:%M")
 
 
 def main():
+    final_reg_date_complete = False
+
+
     # Check to see if the current hour has changed
     now = datetime.datetime.now()
     this_hour = now.hour
@@ -76,13 +79,18 @@ def main():
                                                           f"id={row[0]}")
                     log.log("All tasks that are schedueled are complete. Sleepinging for 60s before trying again")
                     log.log("Closeing browser")
-                browser.close()
+                    browser.close()
+
+
+            elif now > final_reg_date and final_reg_date_complete == False:
+                log.log("Final registration date has passed. All evals without registration date set will now be sent sent.")
+
+
+                # Get rows from database
+                rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id != 1 AND eval_year = 2022")
 
                 if len(rows) <= 0:
-                    log.log("Their are no unprocced tasks. Sending status SMS and shutting down program")
-                    this_msg = "Final datetime passed and all taskes have been solved. Shutting dwon because of nothing more todo."
-                    send_sms.sms_troubleshooters(this_msg)
-                    sys.exit()
+                    log.log("Their are no evals without registration date set")
                 # Check to see if any task shoould be run
                 else:
                     log.log("Their are unprocced tasks. Starting browser.")
@@ -120,10 +128,10 @@ def main():
                         # Change state in database to "Shown in Lectio"
                         postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3,
                                                           f"id={row[0]}")
-                    log.log("All tasks that are schedueled are complete. Sleepinging for 60s before trying again")
+                    log.log("All tasks that have not been schedueled have now been sent. Sleepinging for 60s before trying again")
                     log.log("Closeing browser")
-                browser.close()
-
+                    browser.close()
+                final_reg_date_complete = True
 
             else:
 
