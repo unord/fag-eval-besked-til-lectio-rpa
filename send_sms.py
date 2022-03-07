@@ -17,6 +17,8 @@ def sms_troubleshooters(this_msg:str):
 
 
 def sms_send(this_cellphone:str, this_msg:str):
+    now = datetime.datetime.now()
+    this_msg = f"{now}: {this_msg}"
     url = "https://api.sms.dk/v1/sms/send"
     payload = json.dumps({
         "receiver": int("45" + str(this_cellphone)),
