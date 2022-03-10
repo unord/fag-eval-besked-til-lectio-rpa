@@ -87,7 +87,7 @@ def main():
 
 
                 # Get rows from database
-                rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id != 1 AND eval_year = 2022")
+                rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id == 1 AND eval_year = 2022")
 
                 if len(rows) <= 0:
                     log.log("Their are no evals without registration date set")
