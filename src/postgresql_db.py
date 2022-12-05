@@ -1,10 +1,8 @@
 import psycopg2
 from decouple import config
-import send_sms, log
+import send_sms
+from src import log
 import datetime
-
-
-
 
 # documentation for postgresql: https://stackabuse.com/working-with-postgresql-in-python/
 

@@ -1,6 +1,4 @@
-import sys
-import time
-import selenium_autoupdate_chromedriver, send_sms, postgresql_db, lectio, log
+from src import log, postgresql_db, lectio
 import datetime
 
 log_date = datetime.datetime.now()
@@ -106,9 +104,16 @@ def main():
                         this_class_element = row[3]
                         this_teacher_name = row[4]
                         this_random = row[5]
-                        this_teacher_login = row[6]import sys
+                        this_teacher_login = row[6]
+
+
+if __name__ == "__main__":
+    main()
+
+
+import sys
 import time
-import selenium_autoupdate_chromedriver, send_sms, postgresql_db, lectio, log
+import selenium_autoupdate_chromedriver, send_sms
 import datetime
 
 log_date = datetime.datetime.now()
@@ -419,7 +424,3 @@ if __name__ == "__main__":
             this_timestamp = datetime.datetime.now()
             log.log(f"sent sms that program is still running.")
             this_hour = now.hour
-
-
-if __name__ == "__main__":
-    main()

@@ -1,11 +1,9 @@
-import time
-
 from decouple import config
-from selenium import webdriver
-from selenium.common.exceptions import SessionNotCreatedException, WebDriverException, NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
-import platform
-import send_sms, log
+from selenium import webdriver
+import send_sms
+from src import log
 import datetime
 import sys
 
@@ -72,6 +70,27 @@ def lectio_login(browser):
                 send_sms.sms_troubleshooters(error_msg)
                 sys.exit()
             try_attempt = try_attempt + 1
+
+
+def find_send_msg_error(browser: webdriver):
+    find_send_errors = False
+    if find_send_errors == True:
+        postgresql_db.psql_test_connection()
+        rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id = 3 AND eval_year = 2022")
+        browser = selenium_tools.get_webdriver()
+        lectio.lectio_login(browser)
+        browser.get('https://www.lectio.dk/lectio/239/beskeder2.aspx?type=&laererid=37522669619&selectedfolderid=-70')
+        this_link = browser.find_element_by_link_text('Vis alle')
+        this_link.click()
+        time.sleep(3)
+        for row in rows:
+            this_class_element = row[3]
+            this_class_element = this_class_element[0:14]
+            this_class_found = lectio.lectio_does_text_exist(this_class_element, browser)
+            if this_class_found != "":
+                print(this_class_found)
+        browser.close()
+        sys.exit()
 
 
 def lectio_send_msg(browser, this_team, this_msg):
