@@ -1,7 +1,7 @@
 import requests
 from requests.structures import CaseInsensitiveDict
 
-API_ENDPOINT = "https://lectio-fastapi.herokuapp.com/" #link to fastapi
+API_ENDPOINT = "http://10.127.195.100:8000/" #link to fastapi
 
 
 '''
