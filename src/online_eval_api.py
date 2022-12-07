@@ -16,7 +16,7 @@ def eval_close(username: str, password: str, refrence: str, teacher_initials :st
     headers["accept"] = "application/json"
     headers["Content-Type"] = "application/json"
 
-    payload = '{"username": "' + str(username)
+    payload = '{"username": "' + username
     payload = payload + '", "password": "' + password
     payload = payload + '", "refrence": "' + refrence
     payload = payload + '", "teacher_initials": "' + teacher_initials + '"}'
