@@ -1,3 +1,5 @@
+import time
+
 from decouple import config
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
@@ -39,6 +41,7 @@ def lectio_login(browser):
                 error_msg = f"{now}: FAG_eval_rpa crashed when trying to type the username in lectio login page"
                 log.log("FAG_eval_rpa crashed when trying to type the username in lectio login page")
                 send_sms.sms_troubleshooters(error_msg)
+                time.sleep(30)
                 sys.exit()
             try_attempt = try_attempt + 1
 

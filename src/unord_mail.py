@@ -5,66 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os.path import basename
 import smtplib
-import win32com.client as win32
 
-
-def receive_email():
-    monitoring_status_312 = 2
-    monitoring_status_096 = 2
-    last_email_date_312 = 0
-    last_email_date_096 = 0
-    search_period = datetime.now() - timedelta(hours=72)
-    print(search_period)
-
-    outlook = win32.Dispatch('outlook.application')
-    mapi = outlook.GetNamespace("MAPI")
-
-    for account in mapi.Accounts:
-        print(account.DeliveryStore.DisplayName)
-
-    inbox = mapi.GetDefaultFolder(6)
-
-    # *** - ubot@unord.dk indbakke
-    messages = mapi.Folders('ubot@unord.dk').Folders("Indbakke").Items
-
-    today = datetime.today()
-    start_time = search_period.strftime('%d-%m-%Y %H:%M %p')
-    end_time = today.now().strftime('%d-%m-%Y %H:%M %p')
-
-    messages = messages.Restrict("[ReceivedTime] >= '" + start_time + "' And [ReceivedTime] <= '" + end_time + "'")
-
-    messages.Sort("[ReceivedTime]", Descending=False)
-
-    for msg in list(messages):
-        print(msg.Subject + " kl. " + str(msg.ReceivedTime))
-        if msg.Subject[0:21] == "RPA-312 - Status: 200":
-            last_email_date_312 = msg.ReceivedTime
-            monitoring_status_312 = 1
-        elif msg.Subject[0:10] == "Proces 096":
-            last_email_date_096 = msg.ReceivedTime
-            monitoring_status_096 = 1
-    print("Last date 312: " + str(last_email_date_312))
-    print("Last date 096: " + str(last_email_date_096))
-
-    # *** - robotmail indbox
-    print("Robotmail indbakke")
-
-    messages = mapi.Folders("robotmail").Folders("Inbox").Items
-
-    messages = messages.Restrict("[ReceivedTime] >= '" + start_time
-                                 + "' And [ReceivedTime] <= '" + end_time + "'")
-
-    messages.Sort("[ReceivedTime]", Descending=True)
-
-    for msg in list(messages):
-        print(msg.Subject)
-        if msg.Subject[0:19] == "Fejl ved proces 312" and msg.ReceivedTime > last_email_date_312:
-            monitoring_status_312 = 2
-        elif msg.Subject[0:19] == "Fejl ved proces 096" and msg.ReceivedTime > last_email_date_096:
-            monitoring_status_096 = 2
-
-    print(monitoring_status_312)
-    print(monitoring_status_096)
 
 
 

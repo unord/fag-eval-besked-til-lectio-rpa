@@ -6,7 +6,15 @@ API_ENDPOINT = "https://lectio-fastapi.herokuapp.com/" #link to fastapi
 
 def lectio_send_msg(lectio_school_id: int, lectio_user: str, lectio_password: str, send_to :str, subject: str, msg: str, msg_can_be_replied: bool):
     url = API_ENDPOINT+"message_send/"
-    print(url)
+    #print(url)
+
+    msg = msg.replace("\n", "##n")
+    msg = msg.replace("æ", "##ae")
+    msg = msg.replace("ø", "##oe")
+    msg = msg.replace("å", "##aa")
+    msg = msg.replace("Æ", "##AE")
+    msg = msg.replace("Ø", "##OE")
+    msg = msg.replace("Å", "##AA")
 
     headers = CaseInsensitiveDict()
     headers["accept"] = "application/json"
