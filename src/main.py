@@ -1,10 +1,12 @@
 import sys
-from src import log, postgresql_db, unord_sms, lectio_api
+from src import log, postgresql_db, unord_sms, lectio_api, online_eval_api, unord_mail
 import datetime
 from decouple import config
 
 lectio_user = config('LECTIO_RPA_USER')
 lectio_password = config('LECTIO_RPA_PASSWORD')
+eval_user = config('EVAL_RPA_USER')
+eval_password = config('EVAL_RPA_PASSWORD')
 
 log_date = datetime.datetime.now()
 final_choice_date = "05/12-2025 12:15" # format: dd/mm/yyyy hh:mm
@@ -155,13 +157,21 @@ def sending_scheduled_evals():
 
 
             lectio_fastapi_msg = lectio_api.lectio_send_msg(236, lectio_user, lectio_password, this_class, f"Fagevaluering for hold: {this_class_element}", this_message, False)
+            if lectio_fastapi_msg.status_code == 200:
+                postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
+                log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
 
-            log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
+                log.log(
+                    f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
+            else:
+                error_msg = f"Failed to to send msg via lectio for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
+                log.log(error_msg)
+                unord_mail.send_email_with_attachments('ubot@unord.dk', ['gore@unord.dk'], f'Failed to send msg via lectio for class: {this_class_element}', error_msg, [], [], [])
 
-            log.log(f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
+
+
 
             # Change state in database to "Shown in Lectio"
-            postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
 
 
 
@@ -174,9 +184,10 @@ def sending_scheduled_evals():
 def final_reg_date_complete_state(now: datetime.datetime, final_reg_date: datetime.datetime) -> bool:
     return now > final_reg_date
 
-def close_evals_scheduled(now: datetime.datetime, final_reg_date: datetime.datetim) -> dict:
+def close_evals_scheduled() -> dict:
     rows = postgresql_db.get_all_rows("eval_app_classschool",
                                "eval_sent_state_id = 3 "
+                               "AND eval_close_datetim IS NOT NULL"
                                "AND eval_close_datetime < NOW() "
                                "AND eval_year = 2022 "
                                "AND eval_closed = False")
@@ -197,8 +208,15 @@ def close_evals_scheduled(now: datetime.datetime, final_reg_date: datetime.datet
             this_sent_status = row[12]
             this_runtime = row[13]
 
-            postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id=this_id")
-            log.log(f"Closed eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
+
+            msg = online_eval_api.eval_close(eval_user, eval_password, this_random, this_teacher_login)
+            if msg.status_code == 200:
+                postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id=this_id")
+                log.log(f"Closed eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
+            else:
+                error_msg = f"Failed to close eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
+                log.log(error_msg)
+                unord_mail.send_email_with_attachments('ubot@unord.dk', ['gore@unord.dk'], f'Failed to close eval for class: {this_class_element}', error_msg, [], [], [])
 
 def main():
 
