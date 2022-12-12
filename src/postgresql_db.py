@@ -1,7 +1,7 @@
 import psycopg2
 from decouple import config
 import unord_sms
-from src import log
+import log
 import datetime
 
 # documentation for postgresql: https://stackabuse.com/working-with-postgresql-in-python/
