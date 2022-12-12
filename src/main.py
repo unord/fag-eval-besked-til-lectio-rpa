@@ -1,5 +1,5 @@
 import sys
-from src import log, postgresql_db, unord_sms, lectio_api, online_eval_api, unord_mail
+import log, postgresql_db, unord_sms, lectio_api, online_eval_api, unord_mail
 import datetime
 from decouple import config
 
@@ -156,7 +156,7 @@ def sending_scheduled_evals():
             this_message = f"{this_message}Venlig hilsen\nU/NORD"
 
 
-            lectio_fastapi_msg = lectio_api.lectio_send_msg(236, lectio_user, lectio_password, this_class, f"Fagevaluering for hold: {this_class_element}", this_message, False)
+            lectio_fastapi_msg = lectio_api.lectio_send_msg(236, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
             if lectio_fastapi_msg.status_code == 200:
                 postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
                 log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
@@ -187,7 +187,7 @@ def final_reg_date_complete_state(now: datetime.datetime, final_reg_date: dateti
 def close_evals_scheduled() -> dict:
     rows = postgresql_db.get_all_rows("eval_app_classschool",
                                "eval_sent_state_id = 3 "
-                               "AND eval_close_datetim IS NOT NULL"
+                               "AND eval_close_datetime IS NOT NULL "
                                "AND eval_close_datetime < NOW() "
                                "AND eval_year = 2022 "
                                "AND eval_closed = False")
@@ -208,10 +208,11 @@ def close_evals_scheduled() -> dict:
             this_sent_status = row[12]
             this_runtime = row[13]
 
-
+            log.log(f"sending data to eval-api: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
             msg = online_eval_api.eval_close(eval_user, eval_password, this_random, this_teacher_login)
+            log.log(f"msg from eval-api: {msg}")
             if msg.status_code == 200:
-                postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id=this_id")
+                postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id={this_id}")
                 log.log(f"Closed eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
             else:
                 error_msg = f"Failed to close eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
@@ -241,6 +242,7 @@ def main():
         final_datetime_passed_sending_the_rest()
 
     sending_scheduled_evals()
+    close_evals_scheduled()
 
     log.log("Closing browser")
     #browser.close()

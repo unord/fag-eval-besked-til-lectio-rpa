@@ -3,6 +3,7 @@ from requests.structures import CaseInsensitiveDict
 from decouple import config
 
 API_ENDPOINT = "https://lectio-fastapi.herokuapp.com/" #link to fastapi
+#API_ENDPOINT = "http://127.0.0.1:8000/" #link to local test fastapi
 
 def lectio_send_msg(lectio_school_id: int, lectio_user: str, lectio_password: str, send_to :str, subject: str, msg: str, msg_can_be_replied: bool):
     url = API_ENDPOINT+"message_send/"
