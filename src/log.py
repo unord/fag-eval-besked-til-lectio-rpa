@@ -6,7 +6,7 @@ import datetime
 def log(this_log_msg:str):
 
     # now we will Create and configure logger
-    logging.basicConfig(filename=f"logs/src/fag-eval-{main.log_date.year}{main.log_date.month}{main.log_date.day}{main.log_date.hour}{main.log_date.minute}.log",
+    logging.basicConfig(filename=f"src/logs/fag-eval-{main.log_date.year}{main.log_date.month}{main.log_date.day}{main.log_date.hour}{main.log_date.minute}.log",
                         format='%(asctime)s %(message)s',
                         filemode='w')
     now = datetime.datetime.now()
