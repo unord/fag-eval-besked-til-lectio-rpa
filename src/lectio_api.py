@@ -13,6 +13,7 @@ def send_to_lectio_json_clean_string(this_string: str) -> str:
     this_string = this_string.replace("Æ", "##AE")
     this_string = this_string.replace("Ø", "##OE")
     this_string = this_string.replace("Å", "##AA")
+    print(this_string)
     return this_string
 
 def lectio_send_msg(lectio_school_id: int, lectio_user: str, lectio_password: str, send_to :str, subject: str, msg: str, msg_can_be_replied: bool):
