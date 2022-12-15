@@ -1,8 +1,8 @@
 import requests
 from requests.structures import CaseInsensitiveDict
 
-#API_ENDPOINT = "http://10.127.195.100:8000/" #link to fastapi rpa-03
-API_ENDPOINT = "http://10.126.225.150:8000/" #link to fastapi rpa-04
+#API_ENDPOINT = "http://10.127.195.100:8000/" #link to fastapi rpa-03 windows server
+API_ENDPOINT = "http://10.126.225.150:8000/" #link to fastapi rpa-04 linux server
 
 
 '''

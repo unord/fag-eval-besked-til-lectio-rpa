@@ -12,31 +12,34 @@ import smtplib
 def send_email_with_attachments(sender: str, receivers: list, subject: str, body: str,
                                 ccs: list, bccs: list, files: list = []):
 
-    msg = MIMEMultipart()
-    msg['From'] = sender
-    msg['To'] = ', '.join(receivers)
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
-    if files is not None:
-        for file in files:
-            with open(file, "rb") as fil:
-                part = MIMEApplication(
-                    fil.read(),
-                    Name=basename(file)
-                )
-            part['Content-Disposition'] = 'attachment; filename="%s"' % basename(file)
-            msg.attach(part)
-    if ccs is not None:
-        msg['Cc'] = ', '.join(ccs)
-    if bccs is not None:
-        msg['Bcc'] = ', '.join(bccs)
-    receivers = receivers + ccs + bccs
-    server = smtplib.SMTP('smtp.efif.dk', 25)
-    server.starttls()
-    server.login(config('EMAIL_USER'), config('EMAIL_PASSWORD'))
-    text = msg.as_string()
-    server.sendmail(sender,  receivers, text)
-    server.quit()
+    try:
+        msg = MIMEMultipart()
+        msg['From'] = sender
+        msg['To'] = ', '.join(receivers)
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
+        if files is not None:
+            for file in files:
+                with open(file, "rb") as fil:
+                    part = MIMEApplication(
+                        fil.read(),
+                        Name=basename(file)
+                    )
+                part['Content-Disposition'] = 'attachment; filename="%s"' % basename(file)
+                msg.attach(part)
+        if ccs is not None:
+            msg['Cc'] = ', '.join(ccs)
+        if bccs is not None:
+            msg['Bcc'] = ', '.join(bccs)
+        receivers = receivers + ccs + bccs
+        server = smtplib.SMTP('smtp.efif.dk', 25)
+        server.starttls()
+        server.login(config('EMAIL_USER'), config('EMAIL_PASSWORD'))
+        text = msg.as_string()
+        server.sendmail(sender,  receivers, text)
+        server.quit()
+    except Exception as e:
+        print(e)
 
 
 def send_test_email(reciver_list: list):
