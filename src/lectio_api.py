@@ -20,6 +20,7 @@ def lectio_send_msg(lectio_school_id: int, lectio_user: str, lectio_password: st
     url = API_ENDPOINT+"message_send/"
     #print(url)
 
+    send_to = send_to_lectio_json_clean_string(send_to)
     msg = send_to_lectio_json_clean_string(msg)
     subject = send_to_lectio_json_clean_string(subject)
 
