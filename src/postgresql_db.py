@@ -1,3 +1,5 @@
+import sys
+
 import psycopg2
 from decouple import config
 import unord_sms
@@ -20,10 +22,14 @@ def psql_test_connection():
     try:
         con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host, port=qsql_port)
         log.log(f"Database opened successfully")
+        print('Database opened successfully')
         con.close()
-    except:
+    except Exception as e:
         error_msg = f"Database connection failed, check credentials"
+        print('error_msg')
+        print(f"Error: {e}")
         log.log(error_msg)
+        sys.exit(1)
         #send_sms.sms_troubleshooters(error_msg)
 
 def get_all_rows(this_table=psql_table, this_condition=''):
