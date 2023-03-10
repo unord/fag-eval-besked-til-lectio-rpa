@@ -21,7 +21,7 @@ def if_final_datetime_passed(final_datetime):
     log.log("Final datetime has passed. Will check to see if their are not procced tasks that need to be sent.")
 
     # Get rows from database
-    rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id != 3 AND eval_year = 2022")
+    rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id != 3")
 
     if len(rows) <= 0:
         log.log("Their are no unprocced tasks. Sending status SMS and shutting down program")
@@ -44,7 +44,6 @@ def if_final_datetime_passed(final_datetime):
             this_teacher_name = row[4]
             this_random = row[5]
             this_teacher_login = row[6]
-            this_eval_year = this_ = row[7]
             this_record_created = row[8]
             this_class_size = [9]
             this_class = row[10]
@@ -74,7 +73,7 @@ def final_datetime_passed_sending_the_rest():
     log.log("Final registration date has passed. All evals without registration date set will now be sent sent.")
 
     # Get rows from database
-    rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id = 1 AND eval_year = 2022")
+    rows = postgresql_db.get_all_rows("eval_app_classschool", "eval_sent_state_id = 1")
 
     if len(rows) <= 0:
         log.log("Their are no evals without registration date set")
@@ -124,7 +123,7 @@ def final_datetime_passed_sending_the_rest():
 
 def sending_scheduled_evals():
     rows = postgresql_db.get_all_rows("eval_app_classschool",
-                                      "eval_sent_state_id = 2 AND eval_open_datetime  < NOW() AND eval_year = 2022")
+                                      "eval_sent_state_id = 2 AND eval_open_datetime  < NOW()")
     if len(rows) > 0:
         log.log("Their are tasks schedueled. Starting browser.")
         #browser = selenium_tools.get_webdriver()
@@ -140,7 +139,6 @@ def sending_scheduled_evals():
             this_teacher_name = row[4]
             this_random = row[5]
             this_teacher_login = row[6]
-            this_eval_year = this_ = row[7]
             this_record_created = row[8]
             this_class_size = [9]
             this_class = row[10]
@@ -189,7 +187,6 @@ def close_evals_scheduled() -> dict:
                                "eval_sent_state_id = 3 "
                                "AND eval_close_datetime IS NOT NULL "
                                "AND eval_close_datetime < NOW() "
-                               "AND eval_year = 2022 "
                                "AND eval_closed = False")
     if len(rows) > 0:
         for row in rows:
@@ -200,7 +197,6 @@ def close_evals_scheduled() -> dict:
             this_teacher_name = row[4]
             this_random = row[5]
             this_teacher_login = row[6]
-            this_eval_year = this_ = row[7]
             this_record_created = row[8]
             this_class_size = [9]
             this_class = row[10]
