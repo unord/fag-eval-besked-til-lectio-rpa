@@ -47,7 +47,11 @@ def send_test_email(reciver_list: list):
         'ubot@unord.dk',
         reciver_list,
         'Online-Eval-FastApi Test',
-        'This is a test email from Online-Eval-FastApi',
+        '''
+        This is a test email from Online-Eval-FastApi 
+        https://unord.dk 
+         https://unord.dk
+         ''',
         [],
         [],
         []

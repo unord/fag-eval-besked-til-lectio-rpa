@@ -93,13 +93,12 @@ def final_datetime_passed_sending_the_rest():
             this_teacher_name = row[4]
             this_random = row[5]
             this_teacher_login = row[6]
-            this_eval_year = this_ = row[7]
-            this_record_created = row[8]
-            this_class_size = [9]
-            this_class = row[10]
-            this_url = row[11]
-            this_sent_status = row[12]
-            this_runtime = row[13]
+            this_record_created = row[7]
+            this_class_size = [8]
+            this_class = row[9]
+            this_url = row[10]
+            this_sent_status = row[11]
+            this_runtime = row[12]
 
             this_message = f"Hej elever for hold: {this_class_element}\n\n"
             this_message = f"{this_message}Fagevaluering:\n\n"
@@ -139,12 +138,12 @@ def sending_scheduled_evals():
             this_teacher_name = row[4]
             this_random = row[5]
             this_teacher_login = row[6]
-            this_record_created = row[8]
-            this_class_size = [9]
-            this_class = row[10]
-            this_url = row[11]
-            this_sent_status = row[12]
-            this_runtime = row[13]
+            this_record_created = row[7]
+            this_class_size = [8]
+            this_class = row[9]
+            this_url = row[10]
+            this_sent_status = row[11]
+            this_runtime = row[12]
 
             this_message = f"Hej elever for hold: {this_class_element}\n\n"
             this_message = f"{this_message}Fagevaluering:\n\n"

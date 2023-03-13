@@ -72,8 +72,10 @@ def get_all_tables():
     con.close()
 
 
-
+def main():
+    psql_test_connection()
+    print(get_all_rows("eval_app_classschool"))
 
 
 if __name__ == "__main__":
-    psql_test_connection()
+    main()
