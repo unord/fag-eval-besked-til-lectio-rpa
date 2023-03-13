@@ -44,12 +44,12 @@ def if_final_datetime_passed(final_datetime):
             this_teacher_name = row[4]
             this_random = row[5]
             this_teacher_login = row[6]
-            this_record_created = row[8]
-            this_class_size = [9]
-            this_class = row[10]
-            this_url = row[11]
-            this_sent_status = row[12]
-            this_runtime = row[13]
+            this_record_created = row[7]
+            this_class_size = [8]
+            this_class = row[9]
+            this_url = row[10]
+            this_sent_status = row[11]
+            this_runtime = row[12]
 
             this_message = f"Hej elever for hold: {this_class_element}\n\n"
             this_message = f"{this_message}Fagevaluering:\n\n"
@@ -196,12 +196,12 @@ def close_evals_scheduled() -> dict:
             this_teacher_name = row[4]
             this_random = row[5]
             this_teacher_login = row[6]
-            this_record_created = row[8]
-            this_class_size = [9]
-            this_class = row[10]
-            this_url = row[11]
-            this_sent_status = row[12]
-            this_runtime = row[13]
+            this_record_created = row[7]
+            this_class_size = [8]
+            this_class = row[9]
+            this_url = row[10]
+            this_sent_status = row[11]
+            this_runtime = row[12]
 
             log.log(f"sending data to eval-api: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
             msg = online_eval_api.eval_close(eval_user, eval_password, this_random, this_teacher_login)
