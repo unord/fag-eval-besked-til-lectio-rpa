@@ -23,10 +23,9 @@ def lectio_send_msg(
 ):
     url = f"{API_ENDPOINT}message_send/"
 
-    headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-    }
+    headers = CaseInsensitiveDict()
+    headers["Accept"] = "application/json"
+    headers["Content-Type"] = "application/json; charset=utf-8"  # specify UTF-8 here
 
     payload = json.dumps({
         "lectio_school_id": lectio_school_id,
@@ -36,9 +35,9 @@ def lectio_send_msg(
         "subject": subject,
         "msg": msg,
         "msg_can_be_replied": msg_can_be_replied
-    })
+    }, ensure_ascii=False)  # set ensure_ascii to False to handle non-ASCII characters
 
-    resp_post = requests.post(url, json=payload, headers=headers)
+    resp_post = requests.post(url, data=payload.encode('utf-8'), headers=headers)  # encode payload explicitly to UTF-8
 
     resp_post.encoding = 'utf-8'
 
@@ -52,8 +51,7 @@ def main():
     subject = 'test subject'
     msg = 'test msg  æøå öäü ï'
     msg_can_be_replied = False
-    print(lectio_send_msg(lectio_school_id, lectio_user, lectio_password, send_to, subject, msg, msg_can_be_replied).text)
-
+    print(lectio_send_msg(lectio_school_id, lectio_user, lectio_password, send_to, subject, msg, msg_can_be_replied))
 
 
 if __name__ == '__main__':
