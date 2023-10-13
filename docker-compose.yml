@@ -7,12 +7,12 @@ services:
     env_file:
     - ../stack.env
     environment:
-    - TZ=Europe/Copenhagen
-    - PSQL_DATABASENAME=${stack.env.PSQL_DATABASENAME}
-    - PSQL_USER=${stack.env.PSQL_USER}
-    - PSQL_PASSWORD=${stack.env.PSQL_PASSWORD}
-    - PSQL_HOST=${stack.env.PSQL_HOST}
-    - PSQL_PORT=${stack.env.PSQL_PORT}
+      - TZ=Europe/Copenhagen
+      - PSQL_DATABASENAME=${stack.env.PSQL_DATABASENAME}
+      - PSQL_USER=${stack.env.PSQL_USER}
+      - PSQL_PASSWORD=${stack.env.PSQL_PASSWORD}
+      - PSQL_HOST=${stack.env.PSQL_HOST}
+      - PSQL_PORT=${stack.env.PSQL_PORT}
     volumes:
     - /home/robo/docker-volumes/online_eval_worker/env/.env:/app/.env
     - /home/robo/docker-volumes/online_eval_worker/logs:/app/src/logs
