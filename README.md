@@ -30,6 +30,8 @@ Dette Python script er designet til at automatisere processen med at sende fagev
     LECTIO_RPA_TEST_CLASS= 
     LECTIO_SEND_MSG_URL= 
     LECTIO_LOGIN_URL= 
+    EVAL_RPA_USER=
+    EVAL_RPA_PASSWORD=
     PSQL_DATABASENAME=
     PSQL_USER=ivvbbxpfxninvn
     PSQL_PASSWORD=
