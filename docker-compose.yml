@@ -5,7 +5,7 @@ services:
     container_name: online_eval_worker
     command: python src/main.py
     env_file:
-    - ../stack.env
+      - ../stack.env
     environment:
       - TZ=Europe/Copenhagen
       - PSQL_DATABASENAME=${stack.env.PSQL_DATABASENAME}
@@ -14,5 +14,5 @@ services:
       - PSQL_HOST=${stack.env.PSQL_HOST}
       - PSQL_PORT=${stack.env.PSQL_PORT}
     volumes:
-    - /home/robo/docker-volumes/online_eval_worker/env/.env:/app/.env
-    - /home/robo/docker-volumes/online_eval_worker/logs:/app/src/logs
+      - /home/robo/docker-volumes/online_eval_worker/env/.env:/app/.env
+      - /home/robo/docker-volumes/online_eval_worker/logs:/app/src/logs
