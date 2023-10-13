@@ -4,6 +4,10 @@ services:
     image: robounord/online_eval_worker:1.09
     container_name: online_eval_worker
     command: python src/main.py
+    env_file:
+      - stack.env
+    environment:
+      - TZ=Europe/Copenhagen
     volumes:
     - /home/robo/docker-volumes/online_eval_worker/env/.env:/app/.env
     - /home/robo/docker-volumes/online_eval_worker/logs:/app/src/logs
