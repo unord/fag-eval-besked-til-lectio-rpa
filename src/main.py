@@ -1,7 +1,6 @@
 import sys
 import log, postgresql_db, unord_sms, lectio_api, online_eval_api, unord_mail, uptime_kuma
 import datetime
-from decouple import config
 from os import getenv
 import time
 
