@@ -25,6 +25,11 @@ def psql_test_connection():
         error_msg = f"Database connection failed, check credentials"
         print('error_msg')
         print(f"Error: {e}")
+        print(f"Host: {qsql_host}")
+        print(f"Port: {qsql_port}")
+        print(f"Database: {psql_database}")
+        print(f"User: {qsql_user}")
+        print(f"Password: {qsql_password}")
         log.log(error_msg)
         sys.exit(1)
 
