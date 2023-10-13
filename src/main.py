@@ -2,12 +2,13 @@ import sys
 import log, postgresql_db, unord_sms, lectio_api, online_eval_api, unord_mail, uptime_kuma
 import datetime
 from os import getenv
+from decouple import config
 import time
 
-lectio_user = getenv('LECTIO_RPA_USER')
-lectio_password = getenv('LECTIO_RPA_PASSWORD')
-eval_user = getenv('EVAL_RPA_USER')
-eval_password = getenv('EVAL_RPA_PASSWORD')
+lectio_user = config('LECTIO_RPA_USER')
+lectio_password = config('LECTIO_RPA_PASSWORD')
+eval_user = config('EVAL_RPA_USER')
+eval_password = config('EVAL_RPA_PASSWORD')
 
 log_date = datetime.datetime.now()
 final_choice_date = "05/12-2029 12:15" # format: dd/mm/yyyy hh:mm

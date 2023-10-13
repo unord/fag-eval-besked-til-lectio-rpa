@@ -1,6 +1,7 @@
 import sys
 import psycopg2
 from os import getenv
+from decouple import config
 import os
 import log
 import datetime
@@ -8,11 +9,11 @@ import time
 
 # documentation for postgresql: https://stackabuse.com/working-with-postgresql-in-python/
 
-psql_database = getenv('PSQL_DATABASENAME')
-qsql_user = getenv('PSQL_USER')
-qsql_password = getenv('PSQL_PASSWORD')
-qsql_host = getenv('PSQL_HOST')
-qsql_port = getenv('PSQL_PORT')
+psql_database = config('PSQL_DATABASENAME')
+qsql_user = config('PSQL_USER')
+qsql_password = config('PSQL_PASSWORD')
+qsql_host = config('PSQL_HOST')
+qsql_port = config('PSQL_PORT')
 
 psql_table = 'eval_app_classschool'
 now = datetime.datetime.now()

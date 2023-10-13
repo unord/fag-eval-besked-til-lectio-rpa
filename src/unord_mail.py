@@ -4,6 +4,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from os.path import basename
+from decouple import config
 import smtplib
 
 
@@ -34,7 +35,7 @@ def send_email_with_attachments(sender: str, receivers: list, subject: str, body
         receivers = receivers + ccs + bccs
         server = smtplib.SMTP('mail.efif.dk', 587)
         server.starttls()
-        server.login(getenv('EMAIL_USER'), getenv('EMAIL_PASSWORD'))
+        server.login(config('EMAIL_USER'), config('EMAIL_PASSWORD'))
         text = msg.as_string()
         server.sendmail(sender,  receivers, text)
         server.quit()

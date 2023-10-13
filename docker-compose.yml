@@ -4,8 +4,6 @@ services:
     image: robounord/online_eval_worker:1.12
     container_name: online_eval_worker
     command: python src/main.py
-    env_file:
-    - ../stack.env
     environment:
     - TZ=Europe/Copenhagen
     volumes:
