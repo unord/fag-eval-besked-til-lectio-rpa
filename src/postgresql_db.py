@@ -1,8 +1,6 @@
 import sys
-
 import psycopg2
 from decouple import config
-import unord_sms
 import log
 import datetime
 
@@ -18,7 +16,6 @@ psql_table = 'eval_app_classschool'
 now = datetime.datetime.now()
 
 def psql_test_connection():
-    now = datetime.datetime.now()
     try:
         con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host, port=qsql_port)
         log.log(f"Database opened successfully")
@@ -30,7 +27,7 @@ def psql_test_connection():
         print(f"Error: {e}")
         log.log(error_msg)
         sys.exit(1)
-        #send_sms.sms_troubleshooters(error_msg)
+
 
 def get_all_rows(this_table=psql_table, this_condition=''):
     con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host, port=qsql_port)
@@ -55,10 +52,10 @@ def update_single_value(this_table, this_row, this_value, this_condition):
     try:
         con.commit()
         log.log(f"Updateing {this_condition} , altered to id_state:{this_value}")
-    except:
+    except Exception:
         error_msg = f"Error in Updateing {this_condition} , to id_state:{this_value}"
         log.log(error_msg)
-        #send_sms.sms_troubleshooters(error_msg)
+
 
 def get_all_tables():
     con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host, port=qsql_port)

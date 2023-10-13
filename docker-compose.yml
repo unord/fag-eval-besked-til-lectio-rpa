@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  worker:
+    image: robounord/online_eval_worker:1.00
+    container_name: online_eval_worker
+    command: "python src/main.py"
+    volumes:
+      - /home/robo/docker-volumes/online_eval_worker/env/.env:/app/.env
+      - /home/robo/docker-volumes/online_eval_worker/logs:/app/src/logs
+
+

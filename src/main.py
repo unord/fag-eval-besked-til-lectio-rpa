@@ -1,7 +1,8 @@
 import sys
-import log, postgresql_db, unord_sms, lectio_api, online_eval_api, unord_mail
+import log, postgresql_db, unord_sms, lectio_api, online_eval_api, unord_mail, uptime_kuma
 import datetime
 from decouple import config
+import time
 
 lectio_user = config('LECTIO_RPA_USER')
 lectio_password = config('LECTIO_RPA_PASSWORD')
@@ -9,12 +10,14 @@ eval_user = config('EVAL_RPA_USER')
 eval_password = config('EVAL_RPA_PASSWORD')
 
 log_date = datetime.datetime.now()
-final_choice_date = "05/12-2025 12:15" # format: dd/mm/yyyy hh:mm
-final_reg_date = "05/12-2025 12:10" # format: dd/mm/yyyy hh:mm
+final_choice_date = "05/12-2029 12:15" # format: dd/mm/yyyy hh:mm
+final_reg_date = "05/12-2029 12:10" # format: dd/mm/yyyy hh:mm
 final_choice_date = datetime.datetime.strptime(final_choice_date, "%d/%m-%Y %H:%M")
 final_reg_date = datetime.datetime.strptime(final_reg_date, "%d/%m-%Y %H:%M")
 
 lectio_login_url ="https://www.lectio.dk/lectio/236/login.aspx"
+
+uptime_kuma_url = "https://10.18.225.150:8005/api/push/oWmayS87M8?status=up&msg=OK&ping="
 
 
 def if_final_datetime_passed(final_datetime):
@@ -177,11 +180,11 @@ def sending_scheduled_evals():
         log.log("No tasks schedueled. Sleepinging for 60s before trying again")
 
 
-
 def final_reg_date_complete_state(now: datetime.datetime, final_reg_date: datetime.datetime) -> bool:
     return now > final_reg_date
 
-def close_evals_scheduled() -> dict:
+
+def close_evals_scheduled() -> None:
     rows = postgresql_db.get_all_rows("eval_app_classschool",
                                "eval_sent_state_id = 3 "
                                "AND eval_close_datetime IS NOT NULL "
@@ -214,34 +217,40 @@ def close_evals_scheduled() -> dict:
                 log.log(error_msg)
                 unord_mail.send_email_with_attachments('ubot@unord.dk', ['gore@unord.dk'], f'Failed to close eval for class: {this_class_element}', error_msg, [], [], [])
 
+
 def main():
+    try:
+        while True:
+            postgresql_db.psql_test_connection()  # test database forbindelse
+
+            #browser = selenium_tools.get_webdriver()
+            #lectio.find_send_msg_error(browser)
+
+            now = datetime.datetime.now()
+            #now = datetime.datetime.strptime(now, "%d/%m-%Y %H:%M")
+            final_reg_date_complete = final_reg_date_complete_state(now, final_reg_date)
 
 
-    postgresql_db.psql_test_connection()  # test database forbindelse
+            # Test to see if final datetime has passed
+            if now > final_choice_date:
+                if_final_datetime_passed(final_choice_date)
+            # Test to see if final registration time has passed
+            elif final_reg_date_complete == True:
+                final_datetime_passed_sending_the_rest()
 
+            sending_scheduled_evals()
+            close_evals_scheduled()
 
-    #browser = selenium_tools.get_webdriver()
-    #lectio.find_send_msg_error(browser)
+            uptime_kuma.push_health_check(uptime_kuma_url)
 
-    now = datetime.datetime.now()
-    #now = datetime.datetime.strptime(now, "%d/%m-%Y %H:%M")
-    final_reg_date_complete = final_reg_date_complete_state(now, final_reg_date)
+            log.log("Sleeping for 60s before trying again")
+            time.sleep(60)
 
+    except Exception as e:
+        error_msg = f"Error in main loop: {e}"
+        log.log(error_msg)
 
-
-    # Test to see if final datetime has passed
-    if now > final_choice_date:
-        if_final_datetime_passed(final_choice_date)
-    # Test to see if final registration time has passed
-    elif final_reg_date_complete == True:
-        final_datetime_passed_sending_the_rest()
-
-    sending_scheduled_evals()
-    close_evals_scheduled()
-
-    log.log("Closing browser")
-    #browser.close()
-    sys.exit()
+        sys.exit()
 
 if __name__ == "__main__":
     main()

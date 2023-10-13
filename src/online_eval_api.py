@@ -16,14 +16,14 @@ def eval_close(username: str, password: str, refrence: str, teacher_initials :st
 
     headers = CaseInsensitiveDict()
     headers["accept"] = "application/json"
-    headers["Content-Type"] = "application/json"
+    headers["Content-Type"] = "application/json; charset=utf-8"  # specify UTF-8 here
 
     payload = '{"username": "' + username
     payload = payload + '", "password": "' + password
     payload = payload + '", "refrence": "' + refrence
     payload = payload + '", "teacher_initials": "' + teacher_initials + '"}'
 
-    resp_post = requests.post(url, data=payload, headers=headers)
+    resp_post = requests.post(url, data=payload.encode('utf-8'), headers=headers)
     return resp_post
 
 def main():
