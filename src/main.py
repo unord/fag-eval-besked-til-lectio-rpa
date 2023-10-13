@@ -219,6 +219,7 @@ def close_evals_scheduled() -> None:
 
 
 def main():
+    print(log_date)
     try:
         while True:
             postgresql_db.psql_test_connection()  # test database forbindelse
