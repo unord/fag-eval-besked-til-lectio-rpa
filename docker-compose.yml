@@ -1,13 +1,13 @@
 version: '3.8'
 services:
   worker:
-    image: robounord/online_eval_worker:1.09
+    image: robounord/online_eval_worker:1.10
     container_name: online_eval_worker
     command: python src/main.py
     env_file:
-      - stack.env
+    - stack.env
     environment:
-      - TZ=Europe/Copenhagen
+    - TZ=Europe/Copenhagen
     volumes:
     - /home/robo/docker-volumes/online_eval_worker/env/.env:/app/.env
     - /home/robo/docker-volumes/online_eval_worker/logs:/app/src/logs
