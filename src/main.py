@@ -249,7 +249,7 @@ def main():
     except Exception as e:
         error_msg = f"Error in main loop: {e}"
         log.log(error_msg)
-
+        time.sleep(600)
         sys.exit()
 
 if __name__ == "__main__":
