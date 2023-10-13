@@ -47,7 +47,7 @@ def main():
     lectio_school_id = 235
     lectio_user = config('LECTIO_RPA_USER')
     lectio_password = config('LECTIO_RPA_PASSWORD')
-    send_to = 'RPA holdet'
+    send_to = 'Michael Corey Zieler'
     subject = 'test subject'
     msg = 'test msg  æøå öäü ï'
     msg_can_be_replied = False

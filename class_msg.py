@@ -1,4 +1,5 @@
-from src import log, postgresql_db, lectio
+from src import log, postgresql_db
+import lectio
 import datetime
 
 log_date = datetime.datetime.now()
