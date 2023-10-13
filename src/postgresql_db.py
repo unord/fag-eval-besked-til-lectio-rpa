@@ -3,6 +3,7 @@ import psycopg2
 from os import getenv
 import log
 import datetime
+import time
 
 # documentation for postgresql: https://stackabuse.com/working-with-postgresql-in-python/
 
@@ -30,7 +31,9 @@ def psql_test_connection():
         print(f"Database: {psql_database}")
         print(f"User: {qsql_user}")
         print(f"Password: {qsql_password}")
+        print(os.environ)
         log.log(error_msg)
+        time.sleep(600)
         sys.exit(1)
 
 
