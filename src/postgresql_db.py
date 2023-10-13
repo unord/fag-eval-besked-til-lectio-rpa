@@ -1,6 +1,7 @@
 import sys
 import psycopg2
 from os import getenv
+import os
 import log
 import datetime
 import time
