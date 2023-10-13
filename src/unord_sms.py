@@ -22,7 +22,7 @@ def send_sms(this_cellphone: str, this_msg: str) -> requests.Response:
       })
 
     headers = {
-     'Authorization': 'Bearer ' + config('SMS_API_KEY'),
+     'Authorization': 'Bearer ' + getenv('SMS_API_KEY'),
      'Content-Type': 'application/json'
      }
     response = requests.request("POST", url, headers=headers, data=payload)
