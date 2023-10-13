@@ -5,7 +5,7 @@ services:
     container_name: online_eval_worker
     command: python src/main.py
     env_file:
-    - stack.env
+      - ../stack.env
     environment:
     - TZ=Europe/Copenhagen
     - PSQL_DATABASENAME=${stack.env.PSQL_DATABASENAME}
