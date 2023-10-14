@@ -3,6 +3,7 @@ import log, postgresql_db, unord_sms, lectio_api, online_eval_api, unord_mail, u
 import datetime
 from os import getenv
 import time
+import traceback
 
 lectio_user = getenv('LECTIO_RPA_USER')
 lectio_password = getenv('LECTIO_RPA_PASSWORD')
@@ -250,6 +251,7 @@ def main():
     except Exception as e:
         error_msg = f"Error in main loop: {e}"
         log.log(error_msg)
+        log.log(traceback.print_exc())
         time.sleep(600)
         sys.exit()
 
