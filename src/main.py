@@ -17,7 +17,7 @@ final_reg_date = datetime.datetime.strptime(final_reg_date, "%d/%m-%Y %H:%M")
 
 lectio_login_url ="https://www.lectio.dk/lectio/236/login.aspx"
 
-uptime_kuma_url = "https://10.18.225.150:8005/api/push/oWmayS87M8?status=up&msg=OK&ping="
+uptime_kuma_url = "http://10.18.225.150:8005/api/push/oWmayS87M8?status=up&msg=OK&ping="
 
 
 def if_final_datetime_passed(final_datetime):
