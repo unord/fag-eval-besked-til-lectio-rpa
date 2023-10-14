@@ -1,5 +1,4 @@
 from os import getenv
-from decouple import config
 import json
 import requests
 

@@ -2,7 +2,6 @@ import sys
 import log, postgresql_db, unord_sms, lectio_api, online_eval_api, unord_mail, uptime_kuma
 import datetime
 from os import getenv
-from decouple import config
 import time
 
 lectio_user = getenv('LECTIO_RPA_USER')

@@ -5,11 +5,19 @@ services:
     container_name: online_eval_worker
     command: python src/main.py
     environment:
+      TZ: Europe/Copenhagen
+      LECTIO_RPA_USER: ${LECTIO_RPA_USER}
+      LECTIO_RPA_PASSWORD: ${LECTIO_RPA_PASSWORD}
+      LECTIO_RPA_TEST_CLASS: ${LECTIO_RPA_TEST_CLASS}
+      LECTIO_SEND_MSG_URL: ${LECTIO_SEND_MSG_URL}
+      LECTIO_LOGIN_URL: ${LECTIO_LOGIN_URL}
+      EVAL_RPA_USER: ${EVAL_RPA_USER}
+      EVAL_RPA_PASSWORD: ${EVAL_RPA_PASSWORD}
       PSQL_DATABASENAME: ${PSQL_DATABASENAME}
       PSQL_USER: ${PSQL_USER}
       PSQL_PASSWORD: ${PSQL_PASSWORD}
       PSQL_HOST: ${PSQL_HOST}
       PSQL_PORT: ${PSQL_PORT}
+      SMS_API_KEY: ${SMS_API_KEY}
     volumes:
-    - /home/robo/docker-volumes/online_eval_worker/env/.env:/app/.env
     - /home/robo/docker-volumes/online_eval_worker/logs:/app/src/logs
