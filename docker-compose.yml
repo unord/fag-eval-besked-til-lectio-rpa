@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   worker:
-    image: robounord/online_eval_worker:1.21
+    image: robounord/online_eval_worker:1.22
     container_name: online_eval_worker
     command: python src/main.py
     environment:
@@ -11,5 +11,5 @@ services:
       PSQL_HOST: ${PSQL_HOST}
       PSQL_PORT: ${PSQL_PORT}
     volumes:
-      - /home/robo/docker-volumes/online_eval_worker/env/.env:/app/.env
-      - /home/robo/docker-volumes/online_eval_worker/logs:/app/src/logs
+    - /home/robo/docker-volumes/online_eval_worker/env/.env:/app/.env
+    - /home/robo/docker-volumes/online_eval_worker/logs:/app/src/logs
