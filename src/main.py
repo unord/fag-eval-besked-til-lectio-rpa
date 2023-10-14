@@ -157,7 +157,7 @@ def sending_scheduled_evals():
 
 
             lectio_fastapi_msg = lectio_api.lectio_send_msg(236, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
-            if lectio_fastapi_msg.status_code == 200:
+            if 'success' in lectio_fastapi_msg and lectio_fastapi_msg['success'] == True:
                 postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
                 log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
 
