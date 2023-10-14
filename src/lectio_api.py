@@ -40,8 +40,9 @@ def lectio_send_msg(
     resp_post = requests.post(url, data=payload.encode('utf-8'), headers=headers)  # encode payload explicitly to UTF-8
 
     resp_post.encoding = 'utf-8'
+    resp_post = json.loads(resp_post)
 
-    return resp_post.text
+    return resp_post
 
 def main():
     lectio_school_id = 235
