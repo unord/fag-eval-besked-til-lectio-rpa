@@ -35,7 +35,7 @@ def send_email_with_attachments(sender: str, receivers: list, subject: str, body
         receivers = receivers + ccs + bccs
         server = smtplib.SMTP('mail.efif.dk', 587)
         server.starttls()
-        server.login(config('EMAIL_USER'), config('EMAIL_PASSWORD'))
+        server.login(getenv('EMAIL_USER'), getenv('EMAIL_PASSWORD'))
         text = msg.as_string()
         server.sendmail(sender,  receivers, text)
         server.quit()
