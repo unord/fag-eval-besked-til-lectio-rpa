@@ -24,6 +24,8 @@ def eval_close(username: str, password: str, refrence: str, teacher_initials :st
     payload = payload + '", "teacher_initials": "' + teacher_initials + '"}'
 
     resp_post = requests.post(url, data=payload.encode('utf-8'), headers=headers)
+    resp_post.encoding = 'utf-8'
+
     return resp_post
 
 def main():

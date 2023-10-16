@@ -214,7 +214,7 @@ def close_evals_scheduled() -> None:
                 postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id={this_id}")
                 log.log(f"Closed eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
             else:
-                error_msg = f"Failed to close eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
+                error_msg = f"Failed to close eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key: {this_random}"
                 log.log(error_msg)
                 unord_mail.send_email_with_attachments('ubot@unord.dk', ['gore@unord.dk'], f'Failed to close eval for class: {this_class_element}', error_msg, [], [], [])
 
