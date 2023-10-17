@@ -12,7 +12,7 @@ reference is the random string in the url for the eval
 teacher_initials is the initials of the teacher
 '''
 def eval_close(username: str, password: str, refrence: str, teacher_initials :str) -> requests.Response:
-    url = API_ENDPOINT+"close_eval_and_send_csv/"
+    url = API_ENDPOINT+"close_eval_and_send_mail/"
 
     headers = CaseInsensitiveDict()
     headers["accept"] = "application/json"

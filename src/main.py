@@ -211,7 +211,9 @@ def close_evals_scheduled() -> None:
             msg = online_eval_api.eval_close(eval_user, eval_password, this_random, this_teacher_login)
             log.log(f"msg from eval-api: {msg}")
             if msg.status_code == 200:
+                public_link = msg.json()['public_link']
                 postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id={this_id}")
+                postgresql_db.update_single_value("eval_app_classschool", "eval_url_result_public", public_link, f"id={this_id}")
                 log.log(f"Closed eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
             else:
                 error_msg = f"Failed to close eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key: {this_random}"
