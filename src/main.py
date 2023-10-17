@@ -211,11 +211,11 @@ def close_evals_scheduled() -> None:
             msg = online_eval_api.eval_close(eval_user, eval_password, this_random, this_teacher_login)
             log.log(f"msg from eval-api: {msg}")
             if msg.status_code == 200:
-                print('msg.text')
-                public_link = msg.text['public_link']
-                print(f'Type: {type(public_link)}. Value: {public_link}')
                 print('msg')
                 public_link = msg
+                print(f'Type: {type(public_link)}. Value: {public_link}')
+                print('msg.text')
+                public_link = msg.text['public_link']
                 print(f'Type: {type(public_link)}. Value: {public_link}')
                 postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id={this_id}")
                 postgresql_db.update_single_value("eval_app_classschool", "eval_url_result_public", public_link, f"id={this_id}")
