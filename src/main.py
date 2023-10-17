@@ -4,6 +4,7 @@ import datetime
 from os import getenv
 import time
 import traceback
+import json
 
 lectio_user = getenv('LECTIO_RPA_USER')
 lectio_password = getenv('LECTIO_RPA_PASSWORD')
@@ -213,10 +214,15 @@ def close_evals_scheduled() -> None:
             if msg.status_code == 200:
                 print('msg')
                 public_link = msg
-                print(f'Type: {type(public_link)}. Value: {public_link}')
-                print('msg.text')
-                public_link = msg.text['public_link']
-                print(f'Type: {type(public_link)}. Value: {public_link}')
+                try:
+                    print(f'Trying to decode JSON from response msg.txt')
+                    response_dict = json.loads(msg.text)
+                    if response_dict['success']:  # Assuming you want to check this
+                        print(f"Decode: {response_dict['success']}")
+                        public_link = response_dict['public_link']
+                        print(f'Type (public_link): {type(public_link)}. Value: {public_link}')
+                except json.JSONDecodeError:
+                    print("Failed to decode JSON from response for msg.txt")
                 postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id={this_id}")
                 postgresql_db.update_single_value("eval_app_classschool", "eval_url_result_public", public_link, f"id={this_id}")
                 log.log(f"Closed eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
