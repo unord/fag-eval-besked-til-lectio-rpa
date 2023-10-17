@@ -53,17 +53,23 @@ def get_all_rows(this_table=psql_table, this_condition=''):
     log.log("Database connection closed correctly after acquiring records")
     return rows
 
+
 def update_single_value(this_table, this_row, this_value, this_condition):
-    con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host, port=qsql_port)
-    this_time = now.strftime("%d-%m-%Y %H:%M:%S")
+    con = psycopg2.connect(database=psql_database, user=qsql_user, password=qsql_password, host=qsql_host,
+                           port=qsql_port)
     cur = con.cursor()
-    cur.execute(f"UPDATE {this_table} SET {this_row} = {this_value} WHERE {this_condition}")
+
+    query = f"UPDATE {this_table} SET {this_row} = %s WHERE {this_condition}"
     try:
+        cur.execute(query, [this_value])
         con.commit()
-        log.log(f"Updateing {this_condition} , altered to id_state:{this_value}")
-    except Exception:
-        error_msg = f"Error in Updateing {this_condition} , to id_state:{this_value}"
+        log.log(f"Updating {this_condition}, altered to id_state:{this_value}")
+    except Exception as e:
+        error_msg = f"Error in updating {this_condition}, to id_state:{this_value}. Exception: {e}"
         log.log(error_msg)
+    finally:
+        cur.close()
+        con.close()
 
 
 def get_all_tables():
