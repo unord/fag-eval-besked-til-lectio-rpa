@@ -168,6 +168,8 @@ def sending_scheduled_evals():
             else:
                 error_msg = f"Failed to to send msg via lectio for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
                 log.log(error_msg)
+                log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
+                log.log(f"Failed to send message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
                 unord_mail.send_email_with_attachments('ubot@unord.dk', ['gore@unord.dk'], f'Failed to send msg via lectio for class: {this_class_element}', error_msg, [], [], [])
 
 

@@ -21,6 +21,7 @@ def lectio_send_msg(
         msg: str,
         msg_can_be_replied: bool
 ):
+    print(f"API Sending msg to {send_to}")
     url = f"{API_ENDPOINT}message_send/"
 
     headers = CaseInsensitiveDict()
