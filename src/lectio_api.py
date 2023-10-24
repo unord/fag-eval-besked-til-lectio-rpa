@@ -2,7 +2,7 @@ import requests
 import json
 from requests.structures import CaseInsensitiveDict
 from os import getenv
-from . import log
+import log
 
 API_ENDPOINT = "https://lectio-fastapi.herokuapp.com/" #link to fastapi
 #API_ENDPOINT = "http://127.0.0.1:8000/" #link to local test fastapi
