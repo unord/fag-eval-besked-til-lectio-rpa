@@ -46,7 +46,7 @@ def lectio_send_msg(
         resp_post = json.loads(resp_post.text)
     except:
         resp_post = {'error': 'error decoding json'}
-        log.log(resp_post)
+        log.log(f"lectio_api.py: lectio_send_msg: error decoding json: {resp_post}", 'ERROR')
 
     return resp_post
 
