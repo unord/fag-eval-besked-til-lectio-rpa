@@ -178,6 +178,10 @@ def sending_scheduled_evals():
                 log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
                 log.log(f"Failed to send message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
                 log.log(f"Traceback: {traceback.print_exc()}")
+                log.log(f'Response Body: {lectio_fastapi_msg.text}')
+                log.log(f'Status Code: {lectio_fastapi_msg.status_code}')
+                log.log(f'Response Headers: {lectio_fastapi_msg.headers}')
+
 
 
 
