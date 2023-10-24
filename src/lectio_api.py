@@ -2,6 +2,7 @@ import requests
 import json
 from requests.structures import CaseInsensitiveDict
 from os import getenv
+from . import log
 
 API_ENDPOINT = "https://lectio-fastapi.herokuapp.com/" #link to fastapi
 #API_ENDPOINT = "http://127.0.0.1:8000/" #link to local test fastapi
@@ -41,7 +42,11 @@ def lectio_send_msg(
     resp_post = requests.post(url, data=payload.encode('utf-8'), headers=headers)  # encode payload explicitly to UTF-8
 
     resp_post.encoding = 'utf-8'
-    resp_post = json.loads(resp_post.text)
+    try:
+        resp_post = json.loads(resp_post.text)
+    except:
+        resp_post = {'error': 'error decoding json'}
+        log.log(resp_post)
 
     return resp_post
 
