@@ -44,9 +44,12 @@ def lectio_send_msg(
     resp_post.encoding = 'utf-8'
     try:
         resp_post = json.loads(resp_post.text)
-    except:
+    except json.decoder.JSONDecodeError:
         resp_post = {'error': 'error decoding json'}
-        log.log(f"lectio_api.py: lectio_send_msg: error decoding json: {resp_post}", 'ERROR')
+        log.log(f'resp_post = {resp_post}')
+    except Exception as e:
+        resp_post = {'error': f'error decoding json: {e}'}
+        log.log(f'resp_post = {resp_post}')
 
     return resp_post
 
