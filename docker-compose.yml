@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   worker:
-    image: robounord/online_eval_worker:1.42
+    image: robounord/online_eval_worker:1.43
     container_name: online_eval_worker
     command: python src/main.py
     environment:
