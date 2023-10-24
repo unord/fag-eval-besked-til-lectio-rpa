@@ -45,11 +45,11 @@ def lectio_send_msg(
     try:
         resp_post = json.loads(resp_post.text)
     except json.decoder.JSONDecodeError:
+        log.log(f'Error resp_post = {resp_post}')
         resp_post = {'error': 'error decoding json'}
-        log.log(f'resp_post = {resp_post}')
     except Exception as e:
+        log.log(f'Error resp_post = {resp_post}')
         resp_post = {'error': f'error decoding json: {e}'}
-        log.log(f'resp_post = {resp_post}')
 
     return resp_post
 
