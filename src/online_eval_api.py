@@ -32,6 +32,21 @@ def eval_close(username: str, password: str, reference: str, teacher_initials: s
     return response
 
 
+def test_fasst_api_endpoint():
+    # Make sure to replace this URL with the actual URL where your FastAPI application is running
+    API_ENDPOINT = "http://10.18.225.150:8081/test_endpoint/"
+
+    # Replace this payload with whatever test data you want to send
+    payload = {
+        "test_data": "Hello, this is a test."
+    }
+
+    # Send a POST request to the test endpoint
+    response = requests.post(API_ENDPOINT, json=payload)
+
+    # Print the response JSON to see the echoed back data
+    print(response.json())
+
 def main():
     pass
 

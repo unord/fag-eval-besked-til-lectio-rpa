@@ -171,6 +171,7 @@ def sending_scheduled_evals():
                     log.log(error_msg)
                     log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
                     log.log(f"Failed to send message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
+
                     unord_mail.send_email_with_attachments('ubot@unord.dk', ['gore@unord.dk'], f'Failed to send msg via lectio for class: {this_class_element}', error_msg, [], [], [])
             except Exception as e:
                 error_msg = f"Failed to to send msg via lectio for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
@@ -240,7 +241,7 @@ def close_evals_scheduled() -> None:
                     print(f'Error resp_post = {msg.text}')
                 postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id={this_id}")
                 postgresql_db.update_single_value("eval_app_classschool", "eval_url_result_public", public_link, f"id={this_id}")
-                postgresql_db.update_single_value("eval_app_classschool", "eval_responses", responses, f"id={this_id}")
+                postgresql_db.update_single_value("eval_app_classschool", "responses", responses, f"id={this_id}")
                 log.log(f"Closed eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
             else:
                 error_msg = f"Failed to close eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key: {this_random}"
@@ -283,6 +284,7 @@ def main():
         log.log(traceback.print_exc())
         time.sleep(600)
         sys.exit()
+
 
 if __name__ == "__main__":
     main()
