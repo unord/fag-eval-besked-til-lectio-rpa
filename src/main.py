@@ -237,6 +237,7 @@ def close_evals_scheduled() -> None:
                         print(f'Type (responses): {type(responses)}. Value: {responses}')
                 except json.JSONDecodeError:
                     print("Failed to decode JSON from response for msg.txt")
+                    print(f'Error resp_post = {msg.text}')
                 postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id={this_id}")
                 postgresql_db.update_single_value("eval_app_classschool", "eval_url_result_public", public_link, f"id={this_id}")
                 postgresql_db.update_single_value("eval_app_classschool", "eval_responses", responses, f"id={this_id}")
