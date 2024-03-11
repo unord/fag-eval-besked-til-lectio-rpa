@@ -233,10 +233,13 @@ def close_evals_scheduled() -> None:
                         print(f"Decode: {response_dict['success']}")
                         public_link = response_dict['public_link']
                         print(f'Type (public_link): {type(public_link)}. Value: {public_link}')
+                        responses = response_dict['responses']
+                        print(f'Type (responses): {type(responses)}. Value: {responses}')
                 except json.JSONDecodeError:
                     print("Failed to decode JSON from response for msg.txt")
                 postgresql_db.update_single_value("eval_app_classschool", "eval_closed", True, f"id={this_id}")
                 postgresql_db.update_single_value("eval_app_classschool", "eval_url_result_public", public_link, f"id={this_id}")
+                postgresql_db.update_single_value("eval_app_classschool", "eval_responses", responses, f"id={this_id}")
                 log.log(f"Closed eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
             else:
                 error_msg = f"Failed to close eval for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key: {this_random}"
