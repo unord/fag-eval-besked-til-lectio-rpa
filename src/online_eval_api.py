@@ -22,12 +22,14 @@ def eval_close(username: str, password: str, reference: str, teacher_initials: s
     payload = {
         "username": username,
         "password": password,
-        "refrence": reference,  # Ensure this is spelled correctly as per your API; it might be "reference" instead?
+        "refrence": reference,
         "teacher_initials": teacher_initials
     }
 
+    print(f"Sending request to {url} with payload: {payload}")
+
     response = requests.post(url, json=payload, headers=headers)
-    response.encoding = 'utf-8'  # This might be unnecessary if the server correctly specifies the encoding
+    response.encoding = 'utf-8'
 
     return response
 
