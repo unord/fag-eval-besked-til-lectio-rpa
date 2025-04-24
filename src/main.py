@@ -203,7 +203,7 @@ def sending_scheduled_evals():
 
 
         try:
-                if 'success' in lectio_fastapi_msg and lectio_fastapi_msg['success'] == True:
+                if 'success' in lectio_fastapi_msg:
                     postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
                     log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
 
