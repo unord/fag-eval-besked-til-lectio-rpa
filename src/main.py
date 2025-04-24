@@ -130,7 +130,7 @@ def final_datetime_passed_sending_the_rest():
             this_message = f"{this_message}Venlig hilsen\nU/NORD"
 
 
-            lectio_fastapi_msg = lectio_api.lectio_send_msg(234, lectio_user, lectio_password, this_class, f"Fagevaluering for hold: {this_class_element}", this_message, False)
+            lectio_fastapi_msg = lectio_send_msg(234, lectio_user, lectio_password, this_class, f"Fagevaluering for hold: {this_class_element}", this_message, False)
             log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
             log.log(f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
 
@@ -175,7 +175,7 @@ def sending_scheduled_evals():
             this_message = f"{this_message}Venlig hilsen\nU/NORD"
 
 
-            lectio_fastapi_msg = lectio_api.lectio_send_msg(236, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
+            lectio_fastapi_msg = lectio_send_msg(236, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
             try:
                 if 'success' in lectio_fastapi_msg and lectio_fastapi_msg['success'] == True:
                     postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
