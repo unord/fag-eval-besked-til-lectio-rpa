@@ -82,17 +82,12 @@ def if_final_datetime_passed(final_datetime):
             this_message = f"{this_message}Venlig hilsen\nU/NORD"
 
             try:
-                lectio_fastapi_msg = lectio_send_msg(234, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
+                lectio_send_msg(234, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
             except Exception as e:
                 error_msg = f"Failed to to send msg via lectio for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
                 log.log(error_msg)
-                log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
                 log.log(f"Failed to send message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
                 log.log(f"Traceback: {traceback.print_exc()}")
-                log.log(f'Response Body: {lectio_fastapi_msg.text}')
-                log.log(f'Status Code: {lectio_fastapi_msg.status_code}')
-                log.log(f'Response Headers: {lectio_fastapi_msg.headers}')
-            log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
             log.log(f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
 
             # Change state in database to "Shown in Lectio"
@@ -144,14 +139,11 @@ def final_datetime_passed_sending_the_rest():
             except Exception as e:
                 error_msg = f"Failed to to send msg via lectio for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
                 log.log(error_msg)
-                log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
-                log.log(f"Failed to send message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
+                log.log(
+                    f"Failed to send message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
                 log.log(f"Traceback: {traceback.print_exc()}")
-                log.log(f'Response Body: {lectio_fastapi_msg.text}')
-                log.log(f'Status Code: {lectio_fastapi_msg.status_code}')
-                log.log(f'Response Headers: {lectio_fastapi_msg.headers}')
-            log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
-            log.log(f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
+            log.log(
+                f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
 
             # Change state in database to "Shown in Lectio"
             postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3,
@@ -194,17 +186,17 @@ def sending_scheduled_evals():
             this_message = f"{this_message}Venlig hilsen\nU/NORD"
 
             try:
-                lectio_fastapi_msg = lectio_send_msg(236, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
+                lectio_send_msg(236, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
+                lectio_fastapi_msg = 'success'
             except Exception as e:
                 error_msg = f"Failed to to send msg via lectio for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
                 log.log(error_msg)
-                log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
-                log.log(f"Failed to send message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
+                log.log(
+                    f"Failed to send message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
                 log.log(f"Traceback: {traceback.print_exc()}")
-                log.log(f'Response Body: {lectio_fastapi_msg.text}')
-                log.log(f'Status Code: {lectio_fastapi_msg.status_code}')
-                log.log(f'Response Headers: {lectio_fastapi_msg.headers}')
-            try:
+
+
+        try:
                 if 'success' in lectio_fastapi_msg and lectio_fastapi_msg['success'] == True:
                     postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
                     log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
@@ -221,12 +213,9 @@ def sending_scheduled_evals():
             except Exception as e:
                 error_msg = f"Failed to to send msg via lectio for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
                 log.log(error_msg)
-                log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
                 log.log(f"Failed to send message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
                 log.log(f"Traceback: {traceback.print_exc()}")
-                log.log(f'Response Body: {lectio_fastapi_msg.text}')
-                log.log(f'Status Code: {lectio_fastapi_msg.status_code}')
-                log.log(f'Response Headers: {lectio_fastapi_msg.headers}')
+
 
 
 

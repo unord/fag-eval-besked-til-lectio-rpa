@@ -2,7 +2,7 @@ import sys
 import time
 import traceback
 from playwright.sync_api import sync_playwright, expect
-from applitools.playwright import Eyes, Target
+
 
 
 class LectioBot:
@@ -101,8 +101,7 @@ class LectioBot:
 
         locator = self.page.locator("#s_m_Content_Content_MessageThreadCtrl_MessagesGV_ctl02_ctl03_innerBtn")
         expect(locator, 'more_vert')
-        if self.applitools_is_active:
-            self.eyes.check_window("Check to see if message after it is sent")
+
 
         return True
 
