@@ -5,6 +5,7 @@ from os import getenv
 import time
 import traceback
 import json
+import lectio
 
 lectio_user = getenv('LECTIO_RPA_USER')
 lectio_password = getenv('LECTIO_RPA_PASSWORD')
@@ -21,6 +22,22 @@ lectio_login_url ="https://www.lectio.dk/lectio/236/login.aspx"
 
 uptime_kuma_url = "http://10.18.225.150:8005/api/push/oWmayS87M8?status=up&msg=OK&ping="
 
+def lectio_send_msg(lectio_id, lectio_user, lectio_password ,send_to, subject, msg, this_msg_can_be_replied=False):
+    lectio_session = lectio.LectioBot(lectio_id,
+                                      lectio_user,
+                                      lectio_password,
+                                      True
+                                      )
+    lectio_session.start_playwright()
+    lectio_session.login_to_lectio()
+    lectio_session.navigate_to_messages()
+    lectio_session.send_message(send_to,
+                                subject,
+                                msg,
+                                False,
+                                )
+    lectio_session.stop_playwright()
+
 
 def if_final_datetime_passed(final_datetime):
     log.log("Final datetime has passed. Will check to see if their are not procced tasks that need to be sent.")
@@ -33,7 +50,7 @@ def if_final_datetime_passed(final_datetime):
         this_msg = "Final datetime passed and all taskes have been solved. Shutting down because of nothing more todo."
         unord_sms.sms_troubleshooters(this_msg)
         sys.exit()
-    # Check to see if any task shoould be run
+    # Check to see if any task should be run
     else:
         log.log("Their are unprocced tasks. Starting browser.")
         #browser = selenium_tools.get_webdriver()
@@ -64,7 +81,7 @@ def if_final_datetime_passed(final_datetime):
             this_message = f"{this_message}Venlig hilsen\nU/NORD"
 
 
-            lectio_fastapi_msg = lectio_api.lectio_send_msg(234, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
+            lectio_fastapi_msg = lectio_send_msg(234, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
             log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
             log.log(f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
 
