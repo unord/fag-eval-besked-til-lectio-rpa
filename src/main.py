@@ -31,11 +31,17 @@ def lectio_send_msg(lectio_id, lectio_user, lectio_password ,send_to, subject, m
     lectio_session.start_playwright()
     lectio_session.login_to_lectio()
     lectio_session.navigate_to_messages()
-    lectio_session.send_message(send_to,
-                                subject,
-                                msg,
-                                False,
-                                )
+    try:
+        lectio_session.send_message(send_to,
+                                    subject,
+                                    msg,
+                                    this_msg_can_be_replied,
+                                    )
+    except Exception as e:
+        error_msg = f"Failed to to send msg via lectio for class: {send_to}, with this teacher: {lectio_user} ({lectio_password}) and this key{lectio_id}"
+        log.log(error_msg)
+        log.log(f"Failed to send message about this class: {send_to}, with this teacher: {lectio_user} ({lectio_password}) and this key{lectio_id}")
+        log.log(f"Traceback: {traceback.print_exc()}")
     lectio_session.stop_playwright()
     return lectio_session
 
