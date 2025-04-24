@@ -37,6 +37,7 @@ def lectio_send_msg(lectio_id, lectio_user, lectio_password ,send_to, subject, m
                                 False,
                                 )
     lectio_session.stop_playwright()
+    return lectio_session
 
 
 def if_final_datetime_passed(final_datetime):
