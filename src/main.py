@@ -162,6 +162,8 @@ def final_datetime_passed_sending_the_rest():
 def sending_scheduled_evals():
     rows = postgresql_db.get_all_rows("eval_app_classschool",
                                       "eval_sent_state_id = 2 AND eval_open_datetime  < NOW()")
+
+    lectio_send_msg_success = 'success'
     if len(rows) > 0:
         log.log("Their are tasks schedueled. Starting browser.")
         #browser = selenium_tools.get_webdriver()
@@ -193,7 +195,7 @@ def sending_scheduled_evals():
 
             try:
                 lectio_send_msg(236, lectio_user, lectio_password, this_class_element, f"Fagevaluering for hold: {this_class_element}", this_message, False)
-                lectio_fastapi_msg = 'success'
+                lectio_send_msg_success = 'success'
             except Exception as e:
                 error_msg = f"Failed to to send msg via lectio for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
                 log.log(error_msg)
@@ -203,16 +205,16 @@ def sending_scheduled_evals():
 
 
         try:
-                if 'success' in lectio_fastapi_msg:
+                if 'success' in lectio_send_msg_success:
                     postgresql_db.update_single_value("eval_app_classschool", "eval_sent_state_id", 3, f"id={row[0]}")
-                    log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
+                    log.log(f'Msg for log: {lectio_send_msg_success}')
 
                     log.log(
                         f"Sent message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
                 else:
                     error_msg = f"Failed to to send msg via lectio for class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}"
                     log.log(error_msg)
-                    log.log(f'Msg for lectio-fastapi: {lectio_fastapi_msg}')
+                    log.log(f'Msg for log: {lectio_send_msg_success}')
                     log.log(f"Failed to send message about this class: {this_class_element}, with this teacher: {this_teacher_name} ({this_teacher_login}) and this key{this_random}")
 
                     unord_mail.send_email_with_attachments('ubot@unord.dk', ['gore@unord.dk'], f'Failed to send msg via lectio for class: {this_class_element}', error_msg, [], [], [])
